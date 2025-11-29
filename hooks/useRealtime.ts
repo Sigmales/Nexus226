@@ -232,8 +232,8 @@ export function useCategoryChat(categoryId: string) {
 
     // Admin function: Edit any message
     const editMessage = async (messageId: string, newMessage: string) => {
-        const { error } = await supabase
-            .from('chat_messages')
+        const { error } = await (supabase
+            .from('chat_messages') as any)
             .update({
                 message: newMessage,
                 edited_at: new Date().toISOString(),

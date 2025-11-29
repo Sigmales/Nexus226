@@ -30,7 +30,7 @@ export async function getCategoriesWithCounts(): Promise<(Category & { service_c
     const supabase = await createClient();
 
     const [categoriesResult, servicesResult] = await Promise.all([
-        supabase.from('categories').select('*').is('parent_id', null)
+        (supabase.from('categories') as any).select('*').is('parent_id', null)
             .order('display_order', { ascending: true })
             .order('name'), // Secondary sort by name
         supabase.from('services').select('category_id').eq('status', 'active')
@@ -48,7 +48,7 @@ export async function getCategoriesWithCounts(): Promise<(Category & { service_c
         }
     });
 
-    return categoriesResult.data.map(cat => ({
+    return (categoriesResult.data as any[]).map((cat: any) => ({
         ...cat,
         service_count: counts[cat.id] || 0
     }));
@@ -102,7 +102,7 @@ export async function getCategoryBySlug(slug: string): Promise<Category | null> 
         }
 
         if (data) {
-            console.log(`   ✅ Found category: "${data.name}" (ID: ${data.id})`);
+            console.log(`   ✅ Found category: "${(data as any).name}" (ID: ${(data as any).id})`);
         } else {
             console.log('   ⚠️ Category not found');
         }

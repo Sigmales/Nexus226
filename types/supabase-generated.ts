@@ -243,6 +243,8 @@ export interface Database {
           sender_id: string
           message: string
           created_at: string
+          image_url: string | null
+          edited_at: string | null
         }
         Insert: {
           id?: string
@@ -250,6 +252,8 @@ export interface Database {
           sender_id: string
           message: string
           created_at?: string
+          image_url?: string | null
+          edited_at?: string | null
         }
         Update: {
           id?: string
@@ -257,6 +261,8 @@ export interface Database {
           sender_id?: string
           message?: string
           created_at?: string
+          image_url?: string | null
+          edited_at?: string | null
         }
         Relationships: [
           {
