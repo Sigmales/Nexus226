@@ -8,6 +8,7 @@ interface UseRealtimeOptions {
     channel: string;
     event: string;
     table?: string;
+    filter?: string;
     onInsert?: (payload: any) => void;
     onUpdate?: (payload: any) => void;
     onDelete?: (payload: any) => void;
@@ -17,6 +18,7 @@ export function useRealtime({
     channel,
     event,
     table,
+    filter,
     onInsert,
     onUpdate,
     onDelete,
@@ -36,6 +38,7 @@ export function useRealtime({
                     event: '*',
                     schema: 'public',
                     table: table,
+                    filter: filter,
                 },
                 (payload) => {
                     if (payload.eventType === 'INSERT' && onInsert) {
@@ -70,7 +73,7 @@ export function useRealtime({
             channelInstance.unsubscribe();
             console.log(`🔌 Unsubscribed from channel: ${channel}`);
         };
-    }, [channel, event, table]);
+    }, [channel, event, table, filter]);
 
     return {
         channel: realtimeChannel,
@@ -101,7 +104,7 @@ export function useCategoryChat(categoryId: string) {
                 .from('chat_messages')
                 .select(`
           *,
-          users:sender_id (id, username, role, created_at)
+          users:sender_id (id, username, role, avatar_url, created_at)
         `)
                 .eq('category_id', categoryId)
                 .order('created_at', { ascending: true })
@@ -121,11 +124,16 @@ export function useCategoryChat(categoryId: string) {
         channel: `chat:${categoryId}`,
         event: 'new_message',
         table: 'chat_messages',
+        filter: `category_id=eq.${categoryId}`,
         onInsert: async (newMessage) => {
+            // Double check to ensure we don't process messages from other categories
+            // This is a safety net in case the filter fails or is not supported by the event type
+            if (newMessage.category_id !== categoryId) return;
+
             // Fetch user data for the new message
             const { data: userData } = await supabase
                 .from('users')
-                .select('id, username, role, created_at')
+                .select('id, username, role, avatar_url, created_at')
                 .eq('id', newMessage.sender_id)
                 .single();
 
@@ -138,6 +146,8 @@ export function useCategoryChat(categoryId: string) {
             ]);
         },
         onUpdate: (updatedMessage) => {
+            if (updatedMessage.category_id !== categoryId) return;
+
             setMessages((prev) =>
                 prev.map((msg) =>
                     msg.id === updatedMessage.id ? { ...msg, ...updatedMessage } : msg
@@ -145,6 +155,8 @@ export function useCategoryChat(categoryId: string) {
             );
         },
         onDelete: (deletedMessage) => {
+            // Note: deletedMessage usually only contains the ID for DELETE events, 
+            // so we might not have category_id. But since we filter by ID, it's safe.
             setMessages((prev) => prev.filter((msg) => msg.id !== deletedMessage.id));
         },
     });
