@@ -80,11 +80,11 @@ export async function PUT(request: NextRequest) {
         const updatePromises = ordered_ids.map((categoryId: string, index: number) => {
             const updatePayload: CategoryUpdate = { display_order: index + 1 };
 
-            return supabase
-                .from('categories')
+            return (supabase
+                .from('categories') as any)
                 .update(updatePayload)
                 .eq('id', categoryId)
-                .then(({ error }) => {
+                .then(({ error }: any) => {
                     if (!error) updateCount++;
                     return { error };
                 });
