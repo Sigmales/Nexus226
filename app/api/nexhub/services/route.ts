@@ -75,8 +75,8 @@ export async function POST(request: NextRequest) {
         }
 
         // Insert service
-        const { data, error } = await supabase
-            .from('nexhub_services')
+        const { data, error } = await (supabase
+            .from('nexhub_services') as any)
             .insert({
                 title,
                 description,

@@ -34,8 +34,8 @@ export async function PUT(
         if (display_order !== undefined) updateData.display_order = display_order;
 
         // Update service
-        const { data, error } = await supabase
-            .from('nexhub_services')
+        const { data, error } = await (supabase
+            .from('nexhub_services') as any)
             .update(updateData)
             .eq('id', params.id)
             .select()
