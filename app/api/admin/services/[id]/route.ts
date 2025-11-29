@@ -182,8 +182,8 @@ export async function PUT(
             updateData.status = status;
         }
 
-        const { data: service, error: updateError } = await supabase
-            .from('services')
+        const { data: service, error: updateError } = await (supabase
+            .from('services') as any)
             .update(updateData)
             .eq('id', id)
             .select()
@@ -217,7 +217,7 @@ export async function PUT(
         });
 
         // Log admin action
-        await supabase.from('admin_logs').insert({
+        await (supabase.from('admin_logs') as any).insert({
             admin_id: user.id,
             action: status === 'active' ? 'validate_service' : 'update_service',
             target_user_id: service.proposer_id || service.user_id,
@@ -333,7 +333,7 @@ export async function DELETE(
 
         // Log admin action
         if (service) {
-            await supabase.from('admin_logs').insert({
+            await (supabase.from('admin_logs') as any).insert({
                 admin_id: user.id,
                 action: 'delete_service',
                 target_user_id: service.proposer_id || service.user_id,
