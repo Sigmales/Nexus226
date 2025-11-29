@@ -135,6 +135,40 @@ export interface Database {
         }
         Relationships: []
       }
+      user_badges: {
+        Row: {
+          id: string
+          user_id: string
+          badge_id: string
+          created_at: string
+        }
+        Insert: {
+          id?: string
+          user_id: string
+          badge_id: string
+          created_at?: string
+        }
+        Update: {
+          id?: string
+          user_id?: string
+          badge_id?: string
+          created_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "user_badges_user_id_fkey"
+            columns: ["user_id"]
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "user_badges_badge_id_fkey"
+            columns: ["badge_id"]
+            referencedRelation: "badges"
+            referencedColumns: ["id"]
+          }
+        ]
+      }
       service_proposals: {
         Row: {
           id: string
