@@ -28,7 +28,7 @@ export async function GET(
             .from('users')
             .select('role')
             .eq('id', user.id)
-            .single() as { data: any; error: any };
+            .single() as { data: { role: string } | null, error: any };
 
         if (profileError || userProfile?.role !== 'admin') {
             return NextResponse.json(
@@ -94,7 +94,7 @@ export async function PUT(
             .from('users')
             .select('role')
             .eq('id', user.id)
-            .single() as { data: any; error: any };
+            .single() as { data: { role: string } | null, error: any };
 
         if (profileError || userProfile?.role !== 'admin') {
             return NextResponse.json(
@@ -273,7 +273,7 @@ export async function DELETE(
             .from('users')
             .select('role')
             .eq('id', user.id)
-            .single() as { data: any; error: any };
+            .single() as { data: { role: string } | null, error: any };
 
         if (profileError || userProfile?.role !== 'admin') {
             return NextResponse.json(

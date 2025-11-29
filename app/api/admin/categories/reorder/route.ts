@@ -28,7 +28,7 @@ export async function PUT(request: NextRequest) {
             .from('users')
             .select('role')
             .eq('id', user.id)
-            .single();
+            .single() as { data: { role: string } | null, error: any };
 
         if (userError || !userData || userData.role !== 'admin') {
             return NextResponse.json(

@@ -29,7 +29,7 @@ export async function PATCH(
             .from('users')
             .select('role')
             .eq('id', user.id)
-            .single();
+            .single() as { data: { role: string } | null, error: any };
 
         if (!userData || userData.role !== 'admin') {
             return NextResponse.json(
@@ -164,7 +164,7 @@ export async function DELETE(
             .from('users')
             .select('role')
             .eq('id', user.id)
-            .single();
+            .single() as { data: { role: string } | null, error: any };
 
         if (!userData || userData.role !== 'admin') {
             return NextResponse.json(
