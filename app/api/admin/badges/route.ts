@@ -29,7 +29,7 @@ export async function POST(request: Request) {
 
         const { data, error } = await supabase
             .from('user_badges')
-            .insert({ user_id: userId, badge_id: badgeId })
+            .insert({ user_id: userId, badge_id: badgeId } as any)
             .select()
             .single();
 
