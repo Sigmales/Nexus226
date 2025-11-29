@@ -14,7 +14,7 @@ export async function POST(request: Request) {
         .from('users')
         .select('role')
         .eq('id', user.id)
-        .single();
+        .single() as { data: { role: string } | null };
 
     if (userProfile?.role !== 'admin') {
         return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
@@ -60,7 +60,7 @@ export async function DELETE(request: Request) {
         .from('users')
         .select('role')
         .eq('id', user.id)
-        .single();
+        .single() as { data: { role: string } | null };
 
     if (userProfile?.role !== 'admin') {
         return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
