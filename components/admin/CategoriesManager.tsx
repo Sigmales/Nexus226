@@ -19,7 +19,8 @@ export default function CategoriesManager() {
     const [formData, setFormData] = useState({
         name: '',
         description: '',
-        parent_id: ''
+        parent_id: '',
+        background_image_url: ''
     });
     const supabase = createClient() as any;
 
@@ -69,8 +70,8 @@ export default function CategoriesManager() {
         const basePayload = {
             name: formData.name,
             description: formData.description || null,
-            parent_id: formData.parent_id || null
-            // is_public removed as it does not exist in DB
+            parent_id: formData.parent_id || null,
+            background_image_url: formData.background_image_url || null
         };
 
         try {
@@ -184,14 +185,16 @@ export default function CategoriesManager() {
             setFormData({
                 name: category.name,
                 description: category.description || '',
-                parent_id: category.parent_id || ''
+                parent_id: category.parent_id || '',
+                background_image_url: category.background_image_url || ''
             });
         } else {
             setEditingCategory(null);
             setFormData({
                 name: '',
                 description: '',
-                parent_id: ''
+                parent_id: '',
+                background_image_url: ''
             });
         }
         setIsModalOpen(true);
@@ -200,7 +203,7 @@ export default function CategoriesManager() {
     const handleCloseModal = () => {
         setIsModalOpen(false);
         setEditingCategory(null);
-        setFormData({ name: '', description: '', parent_id: '' });
+        setFormData({ name: '', description: '', parent_id: '', background_image_url: '' });
     };
 
     // Helper to build hierarchy options
@@ -406,7 +409,19 @@ export default function CategoriesManager() {
                                 </select>
                             </div>
 
-                            {/* is_public field removed as it does not exist in DB */}
+                            <div>
+                                <label className="block text-sm font-medium text-text-secondary mb-1">
+                                    Image de fond (URL)
+                                </label>
+                                <input
+                                    type="url"
+                                    value={formData.background_image_url}
+                                    onChange={(e) => setFormData({ ...formData, background_image_url: e.target.value })}
+                                    className="w-full bg-bg-dark border border-border-subtle rounded px-3 py-2 text-text-primary focus:border-neon-gold focus:outline-none transition-colors"
+                                    placeholder="https://example.com/image.jpg"
+                                />
+                                <p className="text-xs text-text-muted mt-1">URL de l'image à afficher en arrière-plan du header de la catégorie</p>
+                            </div>
 
                             <div className="flex justify-end gap-3 mt-6">
                                 <button

@@ -14,7 +14,7 @@ interface HeaderProps {
 }
 
 export default function Header({ onLoginClick, onSignupClick }: HeaderProps) {
-    const { user, loading } = useAuth();
+    const { user, loading, logout } = useAuth();
     const pathname = usePathname();
     const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
     const [categories, setCategories] = useState<Category[]>([]);
@@ -263,6 +263,24 @@ export default function Header({ onLoginClick, onSignupClick }: HeaderProps) {
                                         <span className="text-text-muted text-sm">Aucune catégorie</span>
                                     )}
                                 </nav>
+
+                                {/* Logout Button - Fixed at bottom */}
+                                {user && (
+                                    <div className="mt-auto pt-6 border-t border-border-subtle">
+                                        <button
+                                            onClick={async () => {
+                                                await logout();
+                                                setMobileMenuOpen(false);
+                                            }}
+                                            className="w-full flex items-center gap-3 px-4 py-3 text-red-400 hover:bg-red-500/10 rounded-lg transition-colors"
+                                        >
+                                            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
+                                            </svg>
+                                            <span className="font-medium">Déconnexion</span>
+                                        </button>
+                                    </div>
+                                )}
                             </div>
                         </div>
                     </>,

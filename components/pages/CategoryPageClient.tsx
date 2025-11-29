@@ -33,14 +33,26 @@ export default function CategoryPageClient({ category, services }: CategoryPageC
 
             <main className="flex-1">
                 {/* Category Header */}
-                <section className="relative py-16 px-4 bg-gradient-to-b from-bg-darker to-bg-dark">
-                    <div className="container-nexus">
+                <section
+                    className="relative py-16 px-4 bg-gradient-to-b from-bg-darker to-bg-dark overflow-hidden"
+                    style={category.background_image_url ? {
+                        backgroundImage: `url(${category.background_image_url})`,
+                        backgroundSize: 'cover',
+                        backgroundPosition: 'center',
+                    } : undefined}
+                >
+                    {/* Gradient overlay for text readability */}
+                    {category.background_image_url && (
+                        <div className="absolute inset-0 bg-gradient-to-b from-black/70 via-black/60 to-bg-dark" />
+                    )}
+
+                    <div className="container-nexus relative z-10">
                         <div className="text-center">
-                            <h1 className="text-5xl font-display font-bold text-neon-gold mb-4">
+                            <h1 className="text-5xl font-display font-bold text-neon-gold mb-4 drop-shadow-[0_0_20px_rgba(255,215,0,0.5)]">
                                 {category.name}
                             </h1>
                             {category.description && (
-                                <p className="text-xl text-text-secondary max-w-2xl mx-auto">
+                                <p className="text-xl text-text-secondary max-w-2xl mx-auto drop-shadow-lg">
                                     {category.description}
                                 </p>
                             )}
