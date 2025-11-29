@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { createClient } from '@/lib/supabase/server';
+import { Database } from '@/types/supabase-generated';
 
 // GET: Fetch a single service for editing
 export async function GET(
@@ -104,7 +105,7 @@ export async function PUT(
         }
 
         // Prepare update data with partial updates support
-        const updateData: any = {
+        const updateData: Database['public']['Tables']['services']['Update'] = {
             updated_at: new Date().toISOString(),
         };
 
@@ -181,8 +182,8 @@ export async function PUT(
             updateData.status = status;
         }
 
-        const { data: service, error: updateError } = await (supabase
-            .from('services') as any)
+        const { data: service, error: updateError } = await supabase
+            .from('services')
             .update(updateData)
             .eq('id', id)
             .select()
@@ -225,7 +226,7 @@ export async function PUT(
                 service_title: service.title,
                 action: status === 'active' ? 'validated' : 'updated',
             },
-        } as any);
+        });
 
         return NextResponse.json(
             {
@@ -341,7 +342,7 @@ export async function DELETE(
                     service_title: service.title,
                     action: 'deleted_permanently',
                 },
-            } as any);
+            });
         }
 
         return NextResponse.json(

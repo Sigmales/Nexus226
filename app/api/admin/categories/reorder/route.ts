@@ -1,5 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { createClient } from '@/lib/supabase/server';
+import { Database } from '@/types/supabase-generated';
+
+type CategoryUpdate = Database['public']['Tables']['categories']['Update'];
 
 /**
  * PUT /api/admin/categories/reorder
@@ -74,10 +77,12 @@ export async function PUT(request: NextRequest) {
         // Update display_order for each category
         // Use a transaction-like approach by updating all at once
         let updateCount = 0;
-        const updatePromises = ordered_ids.map((categoryId, index) => {
+        const updatePromises = ordered_ids.map((categoryId: string, index: number) => {
+            const updatePayload: CategoryUpdate = { display_order: index + 1 };
+
             return supabase
                 .from('categories')
-                .update({ display_order: index + 1 } as any)
+                .update(updatePayload)
                 .eq('id', categoryId)
                 .then(({ error }) => {
                     if (!error) updateCount++;
