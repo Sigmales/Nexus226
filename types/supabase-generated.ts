@@ -23,6 +23,7 @@ export interface Database {
           description: string | null
           parent_id: string | null
           is_public: boolean
+          display_order: number
           created_at: string
         }
         Insert: {
@@ -31,6 +32,7 @@ export interface Database {
           description?: string | null
           parent_id?: string | null
           is_public?: boolean
+          display_order?: number
           created_at?: string
         }
         Update: {
@@ -39,6 +41,7 @@ export interface Database {
           description?: string | null
           parent_id?: string | null
           is_public?: boolean
+          display_order?: number
           created_at?: string
         }
         Relationships: []
@@ -132,6 +135,30 @@ export interface Database {
           display_order?: number
           created_at?: string
           updated_at?: string
+        }
+        Relationships: []
+      }
+      badges: {
+        Row: {
+          id: string
+          name: string
+          description: string | null
+          icon_url: string | null
+          created_at: string
+        }
+        Insert: {
+          id?: string
+          name: string
+          description?: string | null
+          icon_url?: string | null
+          created_at?: string
+        }
+        Update: {
+          id?: string
+          name?: string
+          description?: string | null
+          icon_url?: string | null
+          created_at?: string
         }
         Relationships: []
       }
