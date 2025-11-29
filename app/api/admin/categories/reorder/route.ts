@@ -77,7 +77,7 @@ export async function PUT(request: NextRequest) {
         const updatePromises = ordered_ids.map((categoryId, index) => {
             return supabase
                 .from('categories')
-                .update({ display_order: index + 1 })
+                .update({ display_order: index + 1 } as any)
                 .eq('id', categoryId)
                 .then(({ error }) => {
                     if (!error) updateCount++;
