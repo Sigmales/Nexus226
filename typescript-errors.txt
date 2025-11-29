@@ -1,0 +1,24 @@
+﻿app/api/proposals/submit/route.ts(98,14): error TS2769: No overload matches this call.
+  Overload 1 of 2, '(values: never, options?: { count?: "exact" | "planned" | "estimated" | undefined; } | undefined): PostgrestFilterBuilder<{ PostgrestVersion: "12"; }, never, never, null, "services", never, "POST">', gave the following error.
+    Argument of type '{ user_id: string; category_id: any; title: any; description: any; link: any; price: null; status: string; }' is not assignable to parameter of type 'never'.
+  Overload 2 of 2, '(values: never[], options?: { count?: "exact" | "planned" | "estimated" | undefined; defaultToNull?: boolean | undefined; } | undefined): PostgrestFilterBuilder<{ PostgrestVersion: "12"; }, never, never, null, "services", never, "POST">', gave the following error.
+    Object literal may only specify known properties, and 'user_id' does not exist in type 'never[]'.
+app/api/proposals/submit/route.ts(124,18): error TS2769: No overload matches this call.
+  Overload 1 of 2, '(values: never, options?: { count?: "exact" | "planned" | "estimated" | undefined; } | undefined): PostgrestFilterBuilder<{ PostgrestVersion: "12"; }, never, never, null, "service_proposals", never, "POST">', gave the following error.
+    Argument of type '{ service_id: any; user_id: string; message: any; status: string; }' is not assignable to parameter of type 'never'.
+  Overload 2 of 2, '(values: never[], options?: { count?: "exact" | "planned" | "estimated" | undefined; defaultToNull?: boolean | undefined; } | undefined): PostgrestFilterBuilder<{ PostgrestVersion: "12"; }, never, never, null, "service_proposals", never, "POST">', gave the following error.
+    Object literal may only specify known properties, and 'service_id' does not exist in type 'never[]'.
+app/api/proposals/submit/route.ts(125,41): error TS2339: Property 'id' does not exist on type 'never'.
+components/admin/EditServiceModal.tsx(5,23): error TS2307: Cannot find module '@/lib/toast' or its corresponding type declarations.
+components/admin/EditServiceModal.tsx(6,20): error TS2307: Cannot find module '@/components/ui/Button' or its corresponding type declarations.
+components/admin/EditServiceModal.tsx(96,58): error TS2339: Property 'parent_id' does not exist on type '{ id: string; name: string; description: string | null; created_at: string; }'.
+components/admin/EditServiceModal.tsx(106,55): error TS2339: Property 'parent_id' does not exist on type '{ id: string; name: string; description: string | null; created_at: string; }'.
+components/pages/AdminServicesClient.tsx(6,23): error TS2307: Cannot find module '@/components/admin/AdminTabs' or its corresponding type declarations.
+components/pages/AdminServicesClient.tsx(101,21): error TS2322: Type '{ onClose: () => void; initialView: "login" | "signup"; }' is not assignable to type 'IntrinsicAttributes & LoginModalProps'.
+  Property 'initialView' does not exist on type 'IntrinsicAttributes & LoginModalProps'.
+components/services/ServiceCard.tsx(74,87): error TS18049: 'service.users' is possibly 'null' or 'undefined'.
+hooks/useRealtime.ts(145,14): error TS2769: No overload matches this call.
+  Overload 1 of 2, '(values: never, options?: { count?: "exact" | "planned" | "estimated" | undefined; } | undefined): PostgrestFilterBuilder<{ PostgrestVersion: "12"; }, never, never, null, "chat_messages", never, "POST">', gave the following error.
+    Argument of type '{ category_id: string; sender_id: string; message: string; }' is not assignable to parameter of type 'never'.
+  Overload 2 of 2, '(values: never[], options?: { count?: "exact" | "planned" | "estimated" | undefined; defaultToNull?: boolean | undefined; } | undefined): PostgrestFilterBuilder<{ PostgrestVersion: "12"; }, never, never, null, "chat_messages", never, "POST">', gave the following error.
+    Object literal may only specify known properties, and 'category_id' does not exist in type 'never[]'.
