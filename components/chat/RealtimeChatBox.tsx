@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState, useRef, useEffect } from 'react';
+import Link from 'next/link';
 import { useCategoryChat } from '@/hooks/useRealtime';
 import { useAuth } from '@/hooks/useAuth';
 import type { ChatMessageWithAuthor } from '@/types/database';
@@ -196,8 +197,9 @@ export default function RealtimeChatBox({ categoryId, categoryName }: RealtimeCh
                                         }`}
                                 >
                                     <div className="flex items-center gap-2 mb-1">
-                                        <span
-                                            className={`text-sm font-semibold ${msg.users?.role === 'admin'
+                                        <Link
+                                            href={`/profile/${msg.users?.username || 'unknown'}`}
+                                            className={`text-sm font-semibold hover:underline cursor-pointer ${msg.users?.role === 'admin'
                                                 ? 'text-neon-purple'
                                                 : msg.sender_id === user?.id
                                                     ? 'text-neon-gold'
@@ -205,7 +207,7 @@ export default function RealtimeChatBox({ categoryId, categoryName }: RealtimeCh
                                                 }`}
                                         >
                                             @{msg.users?.username || 'Utilisateur'}
-                                        </span>
+                                        </Link>
                                         {msg.users?.role === 'admin' && (
                                             <span className="badge badge-admin text-xs py-0 px-1.5">
                                                 Admin
