@@ -97,8 +97,8 @@ export default function Header({ onLoginClick, onSignupClick }: HeaderProps) {
                             <div className="w-32 h-8 bg-bg-card animate-pulse rounded" />
                         ) : categories.length > 0 ? (
                             categories.map((category) => {
-                                const categoryPath = `/categories/${category.name.toLowerCase().replace(/ /g, '-')}`;
-                                const isActive = pathname === categoryPath;
+                                const categoryPath = `/categories/${generateSlug(category.name)}`;
+                                const isActive = pathname === categoryPath || pathname?.startsWith(`${categoryPath}/`);
                                 return (
                                     <Link
                                         key={category.id}
@@ -261,8 +261,8 @@ export default function Header({ onLoginClick, onSignupClick }: HeaderProps) {
                                         </div>
                                     ) : categories.length > 0 ? (
                                         categories.map((category) => {
-                                            const categoryPath = `/categories/${category.name.toLowerCase().replace(/ /g, '-')}`;
-                                            const isActive = pathname === categoryPath;
+                                            const categoryPath = `/categories/${generateSlug(category.name)}`;
+                                            const isActive = pathname === categoryPath || pathname?.startsWith(`${categoryPath}/`);
                                             return (
                                                 <Link
                                                     key={category.id}
