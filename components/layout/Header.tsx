@@ -21,6 +21,15 @@ export default function Header({ onLoginClick, onSignupClick }: HeaderProps) {
     const [loadingCategories, setLoadingCategories] = useState(true);
     const supabase = createClient();
 
+    const generateSlug = (name: string) => {
+        return name
+            .toLowerCase()
+            .normalize('NFD')
+            .replace(/[\u0300-\u036f]/g, '') // Remove accents
+            .replace(/[^a-z0-9]+/g, '-')     // Replace non-alphanumeric with hyphens
+            .replace(/(^-|-$)+/g, '');       // Remove leading/trailing hyphens
+    };
+
     // Fetch categories from database
     const fetchCategories = async () => {
         const { data, error } = await supabase
