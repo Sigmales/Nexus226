@@ -30,6 +30,7 @@ export type UserBadge = {
 export interface UserProfile {
     id: string; // UUID
     username: string;
+    email: string;
     role: 'user' | 'admin' | 'banned';
     created_at: string;
     avatar_url?: string | null;
