@@ -5,6 +5,7 @@ import { createClient } from '@/lib/supabase/client';
 import type { Category, Service } from '@/types/database';
 import type { Database } from '@/types/supabase-generated';
 import CategoryOrderManager from './CategoryOrderManager';
+import { useAuth } from '@/hooks/useAuth';
 
 type CategoryUpdate = Database['public']['Tables']['categories']['Update'];
 type CategoryInsert = Database['public']['Tables']['categories']['Insert'];
@@ -23,6 +24,15 @@ export default function CategoriesManager() {
         background_image_url: '',
         show_in_nav: false
     });
+    const [isAddingService, setIsAddingService] = useState(false);
+    const [newServiceData, setNewServiceData] = useState({
+        title: '',
+        description: '',
+        price: '',
+        link: '',
+        image_url: ''
+    });
+    const { user } = useAuth();
     const supabase = createClient() as any;
 
     const fetchData = async () => {
@@ -32,6 +42,7 @@ export default function CategoriesManager() {
         const { data: categoriesData, error: categoriesError } = await supabase
             .from('categories')
             .select('*')
+            .neq('name', 'NexusHub') // Exclude NexusHub from standard categories management
             .order('display_order', { ascending: true })
             .order('name');
 
@@ -102,6 +113,36 @@ export default function CategoriesManager() {
         } catch (error: any) {
             console.error('Error saving category:', error);
             alert(`Erreur lors de l'enregistrement : ${error.message}`);
+        }
+    };
+
+    const handleAddService = async (e: React.FormEvent) => {
+        e.preventDefault();
+        if (!editingCategory || !user) return;
+
+        try {
+            const { error } = await supabase
+                .from('services')
+                .insert([{
+                    title: newServiceData.title,
+                    description: newServiceData.description,
+                    price: newServiceData.price ? parseFloat(newServiceData.price) : null,
+                    link: newServiceData.link || null,
+                    category_id: editingCategory.id,
+                    user_id: user.id,
+                    status: 'active',
+                    image_url: newServiceData.image_url || null
+                }]);
+
+            if (error) throw error;
+
+            alert('Service ajouté avec succès !');
+            setIsAddingService(false);
+            setNewServiceData({ title: '', description: '', price: '', link: '', image_url: '' });
+            fetchData(); // Refresh data
+        } catch (error: any) {
+            console.error('Error adding service:', error);
+            alert(`Erreur lors de l'ajout du service : ${error.message}`);
         }
     };
 
@@ -208,6 +249,8 @@ export default function CategoriesManager() {
         setIsModalOpen(false);
         setEditingCategory(null);
         setFormData({ name: '', description: '', parent_id: '', background_image_url: '', show_in_nav: false });
+        setIsAddingService(false);
+        setNewServiceData({ title: '', description: '', price: '', link: '', image_url: '' });
     };
 
     // Helper to build hierarchy options
@@ -439,6 +482,88 @@ export default function CategoriesManager() {
                                     Afficher dans le menu de navigation
                                 </label>
                             </div>
+
+                            {/* Services Section for Sub-categories */}
+                            {editingCategory && formData.parent_id && (
+                                <div className="mt-8 pt-6 border-t border-border-subtle">
+                                    <div className="flex justify-between items-center mb-4">
+                                        <h4 className="font-bold text-text-primary">Services associés</h4>
+                                        <button
+                                            type="button"
+                                            onClick={() => setIsAddingService(!isAddingService)}
+                                            className="text-xs px-2 py-1 bg-neon-gold/20 text-neon-gold border border-neon-gold/50 rounded hover:bg-neon-gold/30 transition-colors"
+                                        >
+                                            {isAddingService ? 'Annuler' : '+ Ajouter un service'}
+                                        </button>
+                                    </div>
+
+                                    {/* Add Service Form */}
+                                    {isAddingService && (
+                                        <div className="bg-bg-darker p-4 rounded-lg mb-4 border border-border-subtle">
+                                            <div className="space-y-3">
+                                                <input
+                                                    type="text"
+                                                    placeholder="Titre du service"
+                                                    value={newServiceData.title}
+                                                    onChange={(e) => setNewServiceData({ ...newServiceData, title: e.target.value })}
+                                                    className="w-full bg-bg-dark border border-border-subtle rounded px-3 py-2 text-sm text-text-primary focus:border-neon-gold focus:outline-none"
+                                                />
+                                                <textarea
+                                                    placeholder="Description"
+                                                    value={newServiceData.description}
+                                                    onChange={(e) => setNewServiceData({ ...newServiceData, description: e.target.value })}
+                                                    className="w-full bg-bg-dark border border-border-subtle rounded px-3 py-2 text-sm text-text-primary focus:border-neon-gold focus:outline-none h-20 resize-none"
+                                                />
+                                                <div className="grid grid-cols-2 gap-3">
+                                                    <input
+                                                        type="number"
+                                                        placeholder="Prix (€)"
+                                                        value={newServiceData.price}
+                                                        onChange={(e) => setNewServiceData({ ...newServiceData, price: e.target.value })}
+                                                        className="w-full bg-bg-dark border border-border-subtle rounded px-3 py-2 text-sm text-text-primary focus:border-neon-gold focus:outline-none"
+                                                    />
+                                                    <input
+                                                        type="url"
+                                                        placeholder="Lien (URL)"
+                                                        value={newServiceData.link}
+                                                        onChange={(e) => setNewServiceData({ ...newServiceData, link: e.target.value })}
+                                                        className="w-full bg-bg-dark border border-border-subtle rounded px-3 py-2 text-sm text-text-primary focus:border-neon-gold focus:outline-none"
+                                                    />
+                                                </div>
+                                                <input
+                                                    type="url"
+                                                    placeholder="Image URL (Optionnel)"
+                                                    value={newServiceData.image_url}
+                                                    onChange={(e) => setNewServiceData({ ...newServiceData, image_url: e.target.value })}
+                                                    className="w-full bg-bg-dark border border-border-subtle rounded px-3 py-2 text-sm text-text-primary focus:border-neon-gold focus:outline-none"
+                                                />
+                                                <button
+                                                    type="button"
+                                                    onClick={handleAddService}
+                                                    disabled={!newServiceData.title || !newServiceData.description}
+                                                    className="w-full py-2 bg-neon-gold/20 text-neon-gold border border-neon-gold rounded hover:bg-neon-gold/30 transition-colors text-sm font-bold disabled:opacity-50"
+                                                >
+                                                    Créer le service
+                                                </button>
+                                            </div>
+                                        </div>
+                                    )}
+
+                                    {/* List Existing Services */}
+                                    <div className="space-y-2 max-h-48 overflow-y-auto pr-1">
+                                        {services.filter(s => s.category_id === editingCategory.id).length > 0 ? (
+                                            services.filter(s => s.category_id === editingCategory.id).map(service => (
+                                                <div key={service.id} className="flex items-center justify-between bg-bg-dark p-2 rounded border border-border-subtle">
+                                                    <span className="text-sm text-text-primary truncate">{service.title}</span>
+                                                    <span className="text-xs text-text-muted">{service.price ? `${service.price}€` : 'Gratuit'}</span>
+                                                </div>
+                                            ))
+                                        ) : (
+                                            <p className="text-xs text-text-muted italic text-center py-2">Aucun service dans cette catégorie</p>
+                                        )}
+                                    </div>
+                                </div>
+                            )}
 
                             <div className="flex justify-end gap-3 mt-6">
                                 <button

@@ -18,8 +18,8 @@ export default function ActiveServicesTable() {
             .from('services')
             .select(`
         *,
-        proposer:proposer_id (id, username, role),
-        users:user_id (id, username, role),
+        proposer:proposer_id (id, username, role, avatar_url),
+        users:user_id (id, username, role, avatar_url),
         categories:category_id (id, name)
       `)
             .eq('status', 'active')
