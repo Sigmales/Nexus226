@@ -86,19 +86,19 @@ export default function Header({ onLoginClick, onSignupClick }: HeaderProps) {
                     <nav className="hidden xl:flex items-center space-x-6">
                         <Link
                             href="/"
-                            className={`nav-link text-white hover:text-white/80 ${pathname === '/' ? 'font-bold' : ''}`}
+                            className={`nav-link ${pathname === '/' ? 'text-white font-bold' : ''}`}
                         >
                             Accueil
                         </Link>
                         <Link
                             href="/categories"
-                            className={`nav-link text-orange-500 hover:text-orange-400 ${pathname === '/categories' ? 'font-bold' : ''}`}
+                            className={`nav-link ${pathname === '/categories' ? 'text-orange-500 font-bold' : ''}`}
                         >
                             Catégories
                         </Link>
                         <Link
                             href="/categories/nexushub"
-                            className={`nav-link text-blue-500 hover:text-blue-400 ${pathname === '/categories/nexushub' ? 'font-bold' : ''}`}
+                            className={`nav-link ${pathname === '/categories/nexushub' ? 'text-neon-blue font-bold' : ''}`}
                         >
                             NexusHub
                         </Link>
@@ -241,21 +241,21 @@ export default function Header({ onLoginClick, onSignupClick }: HeaderProps) {
                                     )}
                                     <Link
                                         href="/"
-                                        className={`nav-link text-lg text-white hover:text-white/80 ${pathname === '/' ? 'font-bold' : ''}`}
+                                        className={`nav-link text-lg ${pathname === '/' ? 'text-white font-bold' : ''}`}
                                         onClick={() => setMobileMenuOpen(false)}
                                     >
                                         Accueil
                                     </Link>
                                     <Link
                                         href="/categories"
-                                        className={`nav-link text-lg text-orange-500 hover:text-orange-400 ${pathname === '/categories' ? 'font-bold' : ''}`}
+                                        className={`nav-link text-lg ${pathname === '/categories' ? 'text-orange-500 font-bold' : ''}`}
                                         onClick={() => setMobileMenuOpen(false)}
                                     >
                                         Catégories
                                     </Link>
                                     <Link
                                         href="/categories/nexushub"
-                                        className={`nav-link text-lg text-blue-500 hover:text-blue-400 ${pathname === '/categories/nexushub' ? 'font-bold' : ''}`}
+                                        className={`nav-link text-lg ${pathname === '/categories/nexushub' ? 'text-neon-blue font-bold' : ''}`}
                                         onClick={() => setMobileMenuOpen(false)}
                                     >
                                         NexusHub
