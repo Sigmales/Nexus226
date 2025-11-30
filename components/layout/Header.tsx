@@ -27,6 +27,8 @@ export default function Header({ onLoginClick, onSignupClick }: HeaderProps) {
             .from('categories')
             .select('*')
             .is('parent_id', null) // Only root categories for nav
+            .neq('name', 'NexusHub') // Exclude NexusHub as it has its own link
+            .eq('show_in_nav', true) // Only show categories marked for navigation
             .order('display_order', { ascending: true }) // Manual ordering
             .order('name'); // Secondary sort by name
 
@@ -84,6 +86,12 @@ export default function Header({ onLoginClick, onSignupClick }: HeaderProps) {
                             className={`nav-link ${pathname === '/categories' ? 'text-neon-gold font-bold' : ''}`}
                         >
                             Catégories
+                        </Link>
+                        <Link
+                            href="/categories/nexushub"
+                            className={`nav-link ${pathname === '/categories/nexushub' ? 'text-neon-gold font-bold' : ''}`}
+                        >
+                            NexusHub
                         </Link>
                         {loadingCategories ? (
                             <div className="w-32 h-8 bg-bg-card animate-pulse rounded" />
@@ -235,6 +243,13 @@ export default function Header({ onLoginClick, onSignupClick }: HeaderProps) {
                                         onClick={() => setMobileMenuOpen(false)}
                                     >
                                         Catégories
+                                    </Link>
+                                    <Link
+                                        href="/categories/nexushub"
+                                        className={`nav-link text-lg ${pathname === '/categories/nexushub' ? 'text-neon-gold font-bold' : ''}`}
+                                        onClick={() => setMobileMenuOpen(false)}
+                                    >
+                                        NexusHub
                                     </Link>
 
                                     <div className="h-px bg-border-subtle my-2" />

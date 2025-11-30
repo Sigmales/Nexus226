@@ -20,7 +20,8 @@ export default function CategoriesManager() {
         name: '',
         description: '',
         parent_id: '',
-        background_image_url: ''
+        background_image_url: '',
+        show_in_nav: false
     });
     const supabase = createClient() as any;
 
@@ -71,7 +72,8 @@ export default function CategoriesManager() {
             name: formData.name,
             description: formData.description || null,
             parent_id: formData.parent_id || null,
-            background_image_url: formData.background_image_url || null
+            background_image_url: formData.background_image_url || null,
+            show_in_nav: formData.show_in_nav
         };
 
         try {
@@ -186,7 +188,8 @@ export default function CategoriesManager() {
                 name: category.name,
                 description: category.description || '',
                 parent_id: category.parent_id || '',
-                background_image_url: category.background_image_url || ''
+                background_image_url: category.background_image_url || '',
+                show_in_nav: category.show_in_nav ?? false
             });
         } else {
             setEditingCategory(null);
@@ -194,7 +197,8 @@ export default function CategoriesManager() {
                 name: '',
                 description: '',
                 parent_id: '',
-                background_image_url: ''
+                background_image_url: '',
+                show_in_nav: false
             });
         }
         setIsModalOpen(true);
@@ -203,7 +207,7 @@ export default function CategoriesManager() {
     const handleCloseModal = () => {
         setIsModalOpen(false);
         setEditingCategory(null);
-        setFormData({ name: '', description: '', parent_id: '', background_image_url: '' });
+        setFormData({ name: '', description: '', parent_id: '', background_image_url: '', show_in_nav: false });
     };
 
     // Helper to build hierarchy options
@@ -421,6 +425,19 @@ export default function CategoriesManager() {
                                     placeholder="https://example.com/image.jpg"
                                 />
                                 <p className="text-xs text-text-muted mt-1">URL de l'image à afficher en arrière-plan du header de la catégorie</p>
+                            </div>
+
+                            <div className="flex items-center gap-2">
+                                <input
+                                    type="checkbox"
+                                    id="show_in_nav"
+                                    checked={formData.show_in_nav}
+                                    onChange={(e) => setFormData({ ...formData, show_in_nav: e.target.checked })}
+                                    className="w-4 h-4 bg-bg-dark border border-border-subtle rounded focus:ring-2 focus:ring-neon-gold"
+                                />
+                                <label htmlFor="show_in_nav" className="text-sm font-medium text-text-secondary cursor-pointer">
+                                    Afficher dans le menu de navigation
+                                </label>
                             </div>
 
                             <div className="flex justify-end gap-3 mt-6">
