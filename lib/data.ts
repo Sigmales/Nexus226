@@ -117,6 +117,7 @@ export async function getRandomServices(limit: number = 12): Promise<ServiceWith
         .select(`
       *,
       users:user_id (id, username, role, created_at, avatar_url),
+      proposer:proposer_id (id, username, avatar_url),
       categories:category_id (*)
     `)
         .eq('status', 'active')
@@ -172,6 +173,7 @@ export async function getServicesByCategory(categoryId: string): Promise<Service
         .select(`
       *,
       users:user_id (id, username, role, created_at, avatar_url),
+      proposer:proposer_id (id, username, avatar_url),
       categories:category_id (*)
     `)
         .in('category_id', targetCategoryIds)
