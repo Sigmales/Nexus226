@@ -61,57 +61,46 @@ export async function getCategoryBySlug(slug: string): Promise<Category | null> 
     console.log(`🔍 getCategoryBySlug called with: "${slug}"`);
     const supabase = await createClient();
 
-    try {
-        // Convert slug back to name format
-        // "développement" -> "développement" (keep accents)
-        const nameFromSlug = slug.replace(/-/g, ' ');
-        console.log(`   - nameFromSlug: "${nameFromSlug}"`);
+    // Helper to normalize strings for comparison
+    const normalize = (str: string) => {
+        return str
+            .toLowerCase()
+            .normalize('NFD')
+            .replace(/[\u0300-\u036f]/g, '') // Remove accents
+            .replace(/[^a-z0-9]+/g, '-')     // Replace non-alphanumeric with hyphens
+            .replace(/(^-|-$)+/g, '');       // Remove leading/trailing hyphens
+    };
 
-        // First, try exact match (case-insensitive)
-        let { data, error } = await supabase
-            .from('categories')
-            .select('*')
-            .ilike('name', nameFromSlug)
-            .maybeSingle();
+    // Fetch all categories to find the matching one
+    const { data: allCategories, error } = await supabase
+        .from('categories')
+        .select('*');
 
-        if (error) {
-            console.error('   ❌ Error in first attempt:', error);
-        }
-
-        // If not found, try with capitalized first letter
-        if (!data) {
-            const capitalizedName = nameFromSlug
-                .split(' ')
-                .map(word => word.charAt(0).toUpperCase() + word.slice(1))
-                .join(' ');
-            console.log(`   - Trying capitalized: "${capitalizedName}"`);
-
-            const result = await supabase
-                .from('categories')
-                .select('*')
-                .ilike('name', capitalizedName)
-                .maybeSingle();
-
-            data = result.data;
-            error = result.error;
-        }
-
-        if (error) {
-            console.error('   ❌ Error fetching category:', error);
-            return null;
-        }
-
-        if (data) {
-            console.log(`   ✅ Found category: "${(data as any).name}" (ID: ${(data as any).id})`);
-        } else {
-            console.log('   ⚠️ Category not found');
-        }
-
-        return data as Category | null;
-    } catch (err) {
-        console.error('   🔥 Exception in getCategoryBySlug:', err);
+    if (error) {
+        console.error('Error fetching categories for slug lookup:', error);
         return null;
     }
+
+    if (!allCategories) return null;
+
+    // Find the category where the normalized name matches the requested slug
+    const matchingCategory = allCategories.find(cat => normalize(cat.name) === slug);
+
+    if (matchingCategory) {
+        console.log(`   ✅ Found matching category: "${matchingCategory.name}" for slug "${slug}"`);
+        return matchingCategory;
+    }
+
+    console.log(`   ❌ No category found for slug "${slug}"`);
+
+    // Fallback: Try direct name match (legacy support)
+    const directMatch = allCategories.find(cat => cat.name.toLowerCase() === slug.replace(/-/g, ' ').toLowerCase());
+    if (directMatch) {
+        console.log(`   ✅ Found direct match fallback: "${directMatch.name}"`);
+        return directMatch;
+    }
+
+    return null;
 }
 
 /**
