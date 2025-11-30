@@ -80,6 +80,7 @@ export async function POST(request: NextRequest) {
             .from('services')
             .insert({
                 user_id: user.id,
+                proposer_id: user.id, // Set proposer_id to the submitting user
                 category_id: category_id || null,
                 title: title || null,
                 description: description || null,
