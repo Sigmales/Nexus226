@@ -74,7 +74,8 @@ export async function getCategoryBySlug(slug: string): Promise<Category | null> 
     // Fetch all categories to find the matching one
     const { data: allCategories, error } = await supabase
         .from('categories')
-        .select('*');
+        .select('*')
+        .returns<Category[]>(); // Explicitly type the return value
 
     if (error) {
         console.error('Error fetching categories for slug lookup:', error);
