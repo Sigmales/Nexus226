@@ -39,33 +39,35 @@ export default function NexusHubPage() {
     };
 
     return (
-        <div className="min-h-screen flex flex-col bg-bg-dark">
+        <div className="min-h-screen bg-bg-dark flex flex-col">
             <Header
                 onLoginClick={() => setShowLoginModal(true)}
                 onSignupClick={() => setShowLoginModal(true)}
             />
 
-            <main className="flex-1 container-nexus py-12">
+            <main className="flex-grow container-responsive py-8 md:py-12">
                 {/* Hero Section */}
-                <div className="text-center mb-12">
-                    <div className="w-24 h-24 mx-auto bg-gradient-to-br from-neon-gold to-neon-cyan rounded-2xl flex items-center justify-center mb-6 shadow-neon-gold">
-                        <span className="text-bg-dark font-display font-bold text-5xl">N</span>
+                <div className="text-center mb-12 md:mb-16">
+                    <div className="inline-block mb-4 p-3 rounded-2xl bg-gradient-to-br from-neon-gold/20 to-neon-cyan/20 border border-neon-gold/30">
+                        <span className="text-4xl md:text-5xl">🚀</span>
                     </div>
-                    <h1 className="text-5xl font-display font-bold text-neon-gold mb-4">
+                    <h1 className="text-4xl md:text-5xl lg:text-6xl font-display font-bold text-transparent bg-clip-text bg-gradient-to-r from-neon-gold via-white to-neon-cyan mb-4 md:mb-6 drop-shadow-neon">
                         NexusHub
                     </h1>
-                    <p className="text-xl text-text-secondary max-w-2xl mx-auto">
-                        Services officiels proposés par l'équipe Nexus226 : formations, création de sites web, consulting, et autres prestations professionnelles.
+                    <p className="text-text-secondary text-lg md:text-xl max-w-2xl mx-auto px-4">
+                        Découvrez nos services exclusifs propulsés par l'IA et accélérez votre transformation numérique.
                     </p>
                 </div>
 
                 {/* Services Grid */}
                 {loading ? (
-                    <div className="flex items-center justify-center py-12">
-                        <div className="w-12 h-12 border-4 border-neon-gold border-t-transparent rounded-full animate-spin" />
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-6 md:gap-8">
+                        {[...Array(5)].map((_, i) => (
+                            <div key={i} className="h-96 bg-bg-card animate-pulse rounded-xl border border-border-subtle" />
+                        ))}
                     </div>
-                ) : services.length > 0 ? (
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                ) : (
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-6 md:gap-8" data-testid="nexushub-grid">
                         {services.map((service) => (
                             <NexusServiceCard
                                 key={service.id}
@@ -74,29 +76,20 @@ export default function NexusHubPage() {
                             />
                         ))}
                     </div>
-                ) : (
-                    <div className="neon-glow p-12 text-center">
-                        <div className="text-6xl mb-4">📦</div>
-                        <h2 className="text-2xl font-display font-bold text-text-primary mb-4">
-                            Aucun service disponible
-                        </h2>
-                        <p className="text-text-secondary">
-                            Les services seront bientôt ajoutés par notre équipe.
-                        </p>
-                    </div>
                 )}
             </main>
 
             {showLoginModal && (
-                <LoginModal onClose={() => setShowLoginModal(false)} />
-            )}
-
-            {selectedService && (
-                <ContactModal
-                    service={selectedService}
-                    onClose={() => setSelectedService(null)}
+                <LoginModal
+                    onClose={() => setShowLoginModal(false)}
                 />
             )}
+
+            <ContactModal
+                service={selectedService}
+                onClose={() => setSelectedService(null)}
+            />
         </div>
     );
 }
+

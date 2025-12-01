@@ -24,6 +24,8 @@ export interface Database {
           parent_id: string | null
           is_public: boolean
           display_order: number
+          background_image_url: string | null
+          show_in_nav: boolean
           created_at: string
         }
         Insert: {
@@ -33,6 +35,8 @@ export interface Database {
           parent_id?: string | null
           is_public?: boolean
           display_order?: number
+          background_image_url?: string | null
+          show_in_nav?: boolean
           created_at?: string
         }
         Update: {
@@ -42,6 +46,8 @@ export interface Database {
           parent_id?: string | null
           is_public?: boolean
           display_order?: number
+          background_image_url?: string | null
+          show_in_nav?: boolean
           created_at?: string
         }
         Relationships: []

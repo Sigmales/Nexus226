@@ -18,7 +18,8 @@ export async function GET(request: NextRequest) {
             .from('services')
             .select(`
                 *,
-                users:user_id (id, username, role, created_at),
+                users:user_id (id, username, role, created_at, avatar_url),
+                proposer:proposer_id (id, username, avatar_url),
                 categories:category_id (*)
             `)
             .eq('status', 'active')

@@ -11,18 +11,18 @@
   --accent-tertiary: #FF00FF;
   --accent-purple: #9D4EDD;
   --accent-blue: #00D9FF;
-  
+
   /* Background Colors */
   --bg-dark: #0a0e27;
   --bg-darker: #060913;
   --bg-card: #0f1429;
   --bg-card-hover: #1a1f3a;
-  
+
   /* Text Colors */
   --text-primary: #E0E7FF;
   --text-secondary: #9CA3AF;
   --text-muted: #6B7280;
-  
+
   /* Border & Effects */
   --border-neon: #FFD700;
   --border-subtle: #1f2937;
@@ -32,64 +32,68 @@
   * {
     @apply border-border-subtle;
   }
-  
+
   body {
     @apply bg-bg-dark text-text-primary font-sans antialiased;
     background-color: var(--bg-dark);
     color: var(--text-primary);
+    overflow-x: hidden;
+    /* Prevent horizontal scroll */
+    min-height: 100vh;
   }
-  
-  h1, h2, h3, h4, h5, h6 {
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
     @apply font-display;
   }
 }
 
 @layer components {
+
   /* Neon Glow Effect for Cards */
   .neon-glow {
     @apply bg-bg-card border border-border-subtle rounded-lg transition-all duration-300;
   }
-  
+
   .neon-glow:hover {
     @apply border-neon-gold shadow-neon-glow;
     background-color: var(--bg-card-hover);
   }
-  
+
   /* Neon Button - Primary CTA */
   .neon-button {
-    @apply px-6 py-3 rounded-lg font-semibold text-bg-dark bg-neon-gold 
-           transition-all duration-300 hover:shadow-neon-gold 
-           hover:scale-105 active:scale-95 cursor-pointer;
+    @apply px-6 py-3 rounded-lg font-semibold text-bg-dark bg-neon-gold transition-all duration-300 hover:shadow-neon-gold hover:scale-105 active:scale-95 cursor-pointer;
     text-transform: uppercase;
     letter-spacing: 0.05em;
   }
-  
+
   .neon-button:disabled {
     @apply cursor-not-allowed;
   }
-  
+
   .neon-button-secondary {
-    @apply px-6 py-3 rounded-lg font-semibold text-neon-cyan 
-           border-2 border-neon-cyan bg-transparent
-           transition-all duration-300 hover:bg-neon-cyan hover:text-bg-dark
-           hover:shadow-neon-cyan active:scale-95 cursor-pointer;
+    @apply px-6 py-3 rounded-lg font-semibold text-neon-cyan border-2 border-neon-cyan bg-transparent transition-all duration-300 hover:bg-neon-cyan hover:text-bg-dark hover:shadow-neon-cyan active:scale-95 cursor-pointer;
     text-transform: uppercase;
     letter-spacing: 0.05em;
   }
-  
+
   .neon-button-secondary:disabled {
     @apply cursor-not-allowed;
   }
-  
+
   /* Service Card Styling */
   .service-card {
     @apply neon-glow p-6 cursor-pointer;
   }
-  
+
   .service-card:hover {
     transform: translateY(-4px);
   }
-  
+
   /* Service Description - Consistent text truncation */
   .service-description {
     display: -webkit-box;
@@ -100,7 +104,7 @@
     word-wrap: break-word;
     word-break: break-word;
   }
-  
+
   /* Text truncation utilities */
   .line-clamp-1 {
     display: -webkit-box;
@@ -111,7 +115,7 @@
     word-wrap: break-word;
     word-break: break-word;
   }
-  
+
   .line-clamp-2 {
     display: -webkit-box;
     -webkit-line-clamp: 2;
@@ -121,7 +125,7 @@
     word-wrap: break-word;
     word-break: break-word;
   }
-  
+
   .line-clamp-3 {
     display: -webkit-box;
     -webkit-line-clamp: 3;
@@ -131,52 +135,47 @@
     word-wrap: break-word;
     word-break: break-word;
   }
-  
+
   /* Badge Styles */
   .badge {
     @apply px-3 py-1 rounded-full text-xs font-semibold inline-flex items-center gap-1;
   }
-  
+
   .badge-new {
     @apply bg-neon-gold/20 text-neon-gold border border-neon-gold animate-pulse-slow;
   }
-  
+
   .badge-user {
     @apply bg-neon-cyan/20 text-neon-cyan border border-neon-cyan;
   }
-  
+
   .badge-admin {
     @apply bg-neon-purple/20 text-neon-purple border border-neon-purple;
   }
-  
+
   /* Input Styles */
   .input-neon {
-    @apply w-full px-4 py-3 bg-bg-card border border-border-subtle rounded-lg
-           text-text-primary placeholder:text-text-muted
-           focus:outline-none focus:border-neon-gold focus:shadow-neon-gold
-           transition-all duration-300;
+    @apply w-full px-4 py-3 bg-bg-card border border-border-subtle rounded-lg text-text-primary placeholder:text-text-muted focus:outline-none focus:border-neon-gold focus:shadow-neon-gold transition-all duration-300;
   }
-  
+
   .input-neon:disabled {
     @apply opacity-50 cursor-not-allowed;
   }
-  
+
   /* Tooltip */
   .tooltip {
-    @apply absolute z-50 px-3 py-2 text-sm bg-bg-darker border border-neon-gold
-           rounded-lg shadow-neon-gold whitespace-nowrap;
+    @apply absolute z-50 px-3 py-2 text-sm bg-bg-darker border border-neon-gold rounded-lg shadow-neon-gold whitespace-nowrap;
   }
-  
+
   /* Navigation Link */
   .nav-link {
-    @apply px-4 py-2 text-text-secondary hover:text-neon-gold 
-           transition-colors duration-200 font-medium;
+    @apply px-4 py-2 text-text-secondary hover:text-neon-gold transition-colors duration-200 font-medium;
   }
-  
+
   .nav-link.active {
     @apply text-neon-gold;
   }
-  
+
   /* Container */
   .container-nexus {
     @apply max-w-7xl mx-auto px-4 sm:px-6 lg:px-8;
@@ -187,8 +186,114 @@
   .text-glow {
     text-shadow: 0 0 10px currentColor;
   }
-  
+
   .border-glow {
     box-shadow: 0 0 10px currentColor;
+  }
+
+  /* Responsive Typography - Fluid scaling with clamp() */
+  .text-responsive-xs {
+    font-size: clamp(0.75rem, 1.4vw, 0.875rem);
+    /* 12px → 14px */
+  }
+
+  .text-responsive-sm {
+    font-size: clamp(0.875rem, 1.6vw, 1rem);
+    /* 14px → 16px */
+  }
+
+  .text-responsive-base {
+    font-size: clamp(1rem, 1.8vw, 1.125rem);
+    /* 16px → 18px */
+  }
+
+  .text-responsive-lg {
+    font-size: clamp(1.125rem, 2vw, 1.25rem);
+    /* 18px → 20px */
+  }
+
+  .text-responsive-xl {
+    font-size: clamp(1.25rem, 2.2vw, 1.5rem);
+    /* 20px → 24px */
+  }
+
+  .text-responsive-2xl {
+    font-size: clamp(1.5rem, 2.4vw, 1.875rem);
+    /* 24px → 30px */
+  }
+
+  .text-responsive-3xl {
+    font-size: clamp(1.875rem, 3vw, 2.25rem);
+    /* 30px → 36px */
+  }
+
+  .text-responsive-4xl {
+    font-size: clamp(2.25rem, 3.5vw, 3rem);
+    /* 36px → 48px */
+  }
+
+  /* Responsive Container Utilities */
+  .container-responsive {
+    max-width: min(1200px, 100%);
+    margin-left: auto;
+    margin-right: auto;
+    padding-left: 1rem;
+    /* 16px */
+    padding-right: 1rem;
+  }
+
+  @media (min-width: 768px) {
+    .container-responsive {
+      padding-left: 1.5rem;
+      /* 24px */
+      padding-right: 1.5rem;
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .container-responsive {
+      padding-left: 2rem;
+      /* 32px */
+      padding-right: 2rem;
+    }
+  }
+
+  /* Touch-friendly tap targets (minimum 44x44px) */
+  .tap-target {
+    min-width: 44px;
+    min-height: 44px;
+  }
+
+  /* Responsive grid utilities */
+  .grid-responsive {
+    display: grid;
+    gap: 1rem;
+    grid-template-columns: repeat(1, minmax(0, 1fr));
+  }
+
+  @media (min-width: 768px) {
+    .grid-responsive {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 1.5rem;
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .grid-responsive {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+  }
+
+  @media (min-width: 1280px) {
+    .grid-responsive {
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+  }
+
+  @media (min-width: 1536px) {
+    .grid-responsive {
+      grid-template-columns: repeat(5, minmax(0, 1fr));
+      gap: 2rem;
+    }
   }
 }

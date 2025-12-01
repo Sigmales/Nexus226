@@ -30,7 +30,7 @@ export default function ProposalsTable() {
         // Fetch service proposals
         const { data: servicesData } = await supabase
             .from('services')
-            .select('*, users:user_id(username)')
+            .select('*, users:user_id(username, avatar_url)')
             .eq('status', 'pending')
             .order('created_at', { ascending: false });
 
@@ -50,7 +50,7 @@ export default function ProposalsTable() {
         // Fetch category proposals
         const { data: categoryData } = await supabase
             .from('service_proposals')
-            .select('*, users:user_id(username)')
+            .select('*, users:user_id(username, avatar_url)')
             .eq('status', 'pending')
             .like('message', '[CATEGORY_PROPOSAL]%')
             .order('created_at', { ascending: false });

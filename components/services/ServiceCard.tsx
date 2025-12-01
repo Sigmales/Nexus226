@@ -115,9 +115,6 @@ export default function ServiceCard({ service }: ServiceCardProps) {
                     {/* User Avatar */}
                     {((service as any).proposer || service.users) && (
                         <div className="flex items-center gap-2" title={`Proposé par ${((service as any).proposer?.username || service.users?.username)}`}>
-                            <span className="text-xs text-text-muted hidden sm:inline-block">
-                                @{((service as any).proposer?.username || service.users?.username || 'Anonyme')}
-                            </span>
                             {((service as any).proposer?.avatar_url || service.users?.avatar_url) ? (
                                 <img
                                     src={(service as any).proposer?.avatar_url || service.users?.avatar_url}
@@ -129,6 +126,9 @@ export default function ServiceCard({ service }: ServiceCardProps) {
                                     {((service as any).proposer?.username || service.users?.username || 'A').charAt(0).toUpperCase()}
                                 </div>
                             )}
+                            <span className="text-xs text-text-muted">
+                                @{((service as any).proposer?.username || service.users?.username || 'Anonyme')}
+                            </span>
                         </div>
                     )}
                 </div>

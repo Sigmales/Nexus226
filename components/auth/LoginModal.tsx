@@ -35,7 +35,12 @@ export default function LoginModal({ onClose }: LoginModalProps) {
                 onClose();
             }
         } catch (err: any) {
-            setError(err.message || 'Une erreur est survenue');
+            console.error('Login error:', err);
+            if (err.message === 'Failed to fetch') {
+                setError('Problème de connexion au serveur. Vérifiez votre connexion internet ou si le service est accessible.');
+            } else {
+                setError(err.message || 'Une erreur est survenue');
+            }
         } finally {
             setLoading(false);
         }

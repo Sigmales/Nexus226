@@ -176,7 +176,7 @@ export async function PUT(
                 .single() as { data: any; error: any };
 
             updateData.status = 'active';
-            updateData.user_id = user.id; // Admin who validates
+            // updateData.user_id = user.id; // REMOVED: Keep original proposer as owner
             // proposer_id is preserved from the original service
         } else if (status) {
             updateData.status = status;

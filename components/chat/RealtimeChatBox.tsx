@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState, useRef, useEffect } from 'react';
+import Link from 'next/link';
 import { useCategoryChat } from '@/hooks/useRealtime';
 import { useAuth } from '@/hooks/useAuth';
 import type { ChatMessageWithAuthor } from '@/types/database';
@@ -91,8 +92,14 @@ export default function RealtimeChatBox({ categoryId, categoryName }: RealtimeCh
             lastSentTime.current = now;
             setCooldownRemaining(3);
         } else {
-            alert(typeof error === 'string' ? error : 'Erreur lors de l\'envoi du message');
-            console.error(error);
+            console.error('Full error object:', error);
+            const errorMessage = typeof error === 'object' && error !== null && 'message' in error
+                ? (error as any).message
+                : typeof error === 'string'
+                    ? error
+                    : 'Erreur inconnue lors de l\'envoi';
+
+            alert(`Erreur: ${errorMessage}`);
         }
 
         setIsSending(false);
@@ -190,8 +197,9 @@ export default function RealtimeChatBox({ categoryId, categoryName }: RealtimeCh
                                         }`}
                                 >
                                     <div className="flex items-center gap-2 mb-1">
-                                        <span
-                                            className={`text-sm font-semibold ${msg.users?.role === 'admin'
+                                        <Link
+                                            href={`/profile/${msg.users?.username || 'unknown'}`}
+                                            className={`text-sm font-semibold hover:underline cursor-pointer ${msg.users?.role === 'admin'
                                                 ? 'text-neon-purple'
                                                 : msg.sender_id === user?.id
                                                     ? 'text-neon-gold'
@@ -199,7 +207,7 @@ export default function RealtimeChatBox({ categoryId, categoryName }: RealtimeCh
                                                 }`}
                                         >
                                             @{msg.users?.username || 'Utilisateur'}
-                                        </span>
+                                        </Link>
                                         {msg.users?.role === 'admin' && (
                                             <span className="badge badge-admin text-xs py-0 px-1.5">
                                                 Admin
@@ -213,11 +221,11 @@ export default function RealtimeChatBox({ categoryId, categoryName }: RealtimeCh
                                                 (modifié)
                                             </span>
                                         )}
-                                        {isAdmin && (
+                                        {(isAdmin || msg.sender_id === user?.id) && (
                                             <button
                                                 onClick={() => handleDeleteMessage(msg.id)}
                                                 className="ml-auto text-red-400 hover:text-red-300 transition-colors"
-                                                title="Supprimer (Admin)"
+                                                title={isAdmin ? "Supprimer (Admin)" : "Supprimer"}
                                             >
                                                 <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
